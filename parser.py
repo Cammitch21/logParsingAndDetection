@@ -20,4 +20,4 @@ log_pattern = re.compile(
 )
 
 match = log_pattern.match(log_entry)
-print(match)
+print(match.groupdict())
