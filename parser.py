@@ -14,7 +14,7 @@ def read_log(file_path):
  
 # File Regex
 log_pattern = re.compile(
-    r'(?P<ip>\d+\.\d+\.\d+\.\d+)\s-\s-\s\[(?P<datetime>[^\]]+)\]\s"(?P<request>[^"]+)"\s(?P<status>\d{3})\s(?P<size>\d+)\s["](?P<url>[^"]+)["]\s["](?P<system>[^"]+)["]'
+    r'(?P<ip>\d+\.\d+\.\d+\.\d+)\s-\s-\s\[(?P<datetime>[^\]]+)\]\s"(?P<request>[^"]+)"\s(?P<status>\d{3})\s(?P<size>\d+)\s"(?P<url>[^"]+)"\s"(?P<system>[^"]+)"'
 )
 
 # Parsing each Log Line
@@ -51,7 +51,9 @@ print("Status Code Counts:", status_counts)
 
 # Using Panads to extract suspicious activity in the log file
 df = pd.DataFrame(entries)
-suspicious = df[df['status'] == 404].groupby('ip').size()
-print(suspicious.head())
+df_404 = df[df['status'] == 404]
+ip_404_counts = df_404['ip'].value_counts()
+ip_404_df = ip_404_counts.reset_index()
+print(ip_404_df.head())
 
-suspicious.to_csv('report.csv')
+ip_404_df.to_csv('report.csv')
