@@ -1,1 +1,4 @@
-data/GeoLite2-City.mmdb
+*.mmdb
+*.log
+
+!sample_logs/access_sample.log
